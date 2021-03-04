@@ -1,6 +1,6 @@
 <?php
 
-namespace Asseco\Attachments\App\Http\Controllers;
+namespace Asseco\Attachments\App\Http\Controllers\AttachmentController;
 
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
 use Asseco\Attachments\App\Models\Attachment;
