@@ -14,8 +14,8 @@ class AttachmentSeeder extends Seeder
      */
     public function run()
     {
-        $attachments = Attachment::factory()->count(50)->make()->toArray();
+        $attachments = Attachment::factory()->count(50)->raw();
 
-        Attachment::factory()->createMany($attachments);
+        Attachment::query()->insert($attachments);
     }
 }

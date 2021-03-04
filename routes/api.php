@@ -1,8 +1,7 @@
 <?php
 
-use Asseco\CustomFields\App\Http\Controllers\CustomFieldController;
+use App\Http\Controllers\AttachmentController;
 
-use Asseco\CustomFields\App\Http\Controllers\ValueController;
 use Illuminate\Support\Facades\Route;
 
 /*

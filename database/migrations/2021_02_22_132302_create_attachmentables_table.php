@@ -35,6 +35,6 @@ class CreateAttachmentablesTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(config('attachmentables'));
+        Schema::dropIfExists('attachmentables');
     }
 }
