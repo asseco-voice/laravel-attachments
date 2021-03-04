@@ -1,8 +1,10 @@
 <?php
 
-namespace Database\Seeders;
+declare(strict_types=1);
 
-use App\Models\Attachment;
+namespace Asseco\Attachments\Database\Seeders;
+
+use Asseco\Attachments\App\Models\Attachment;
 use Illuminate\Database\Seeder;
 
 class AttachmentSeeder extends Seeder
@@ -12,7 +14,7 @@ class AttachmentSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $attachments = Attachment::factory()->count(50)->raw();
 

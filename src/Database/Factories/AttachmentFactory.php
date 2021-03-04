@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Factories;
+namespace Asseco\Attachments\Database\Factories;
 
-use App\Models\Attachment;
+use Asseco\Attachments\App\Models\Attachment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AttachmentFactory extends Factory

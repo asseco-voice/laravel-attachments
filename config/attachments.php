@@ -1,5 +1,6 @@
 <?php
 
+use Asseco\Attachments\Models\Attachment;
 use Asseco\Attachments\App\Traits\Attachmentable;
 
 return [
