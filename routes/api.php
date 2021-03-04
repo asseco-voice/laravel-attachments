@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AttachmentController;
+use Asseco\Attachments\App\Http\Controllers\AttachmentController;
 
 use Illuminate\Support\Facades\Route;
 
