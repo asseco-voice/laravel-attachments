@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAttachmentablesTable extends Migration
+class CreateAttachableTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,15 +15,15 @@ class CreateAttachmentablesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('attachmentables', function (Blueprint $table) {
+        Schema::create('attachable', function (Blueprint $table) {
             // Columns
             $table->integer('attachment_id')->unsigned();
-            $table->morphs('attachmentable');
+            $table->morphs('attachable');
             $table->timestamps();
 
             // Indexes
-            $table->unique(['attachment_id', 'attachmentable_id', 'attachmentable_type'], 'attachmentables_ids_type_unique');
-            $table->foreign('attachment_id')->references('id')->on(config('attachments'))
+            $table->unique(['attachment_id', 'attachable_id', 'attachable_type'], 'aßttachable_ids_type_unique');
+            $table->foreign('attachment_id')->references('id')->on('attachments')
                   ->onDelete('cascade')->onUpdate('cascade');
         });
     }
@@ -35,6 +35,6 @@ class CreateAttachmentablesTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attachmentables');
+        Schema::dropIfExists('attachable');
     }
 }

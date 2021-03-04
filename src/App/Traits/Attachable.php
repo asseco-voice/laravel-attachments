@@ -7,7 +7,7 @@ namespace Asseco\Attachments\App\Traits;
 use Asseco\Attachments\App\Models\Attachment;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-trait Attachmentable
+trait Attachable
 {
     public function attachments(): MorphMany
     {

@@ -1,7 +1,7 @@
 <?php
 
 use Asseco\Attachments\Models\Attachment;
-use Asseco\Attachments\App\Traits\Attachmentable;
+use Asseco\Attachments\App\Traits\Attachable;
 
 return [
     /**
@@ -15,9 +15,9 @@ return [
     ],
 
     /**
-     * Namespace to Attachmentable trait.
+     * Namespace to Attachable trait.
      */
-    'trait_path'  => Attachmentable::class,
+    'trait_path'  => Attachable::class,
 
 
 ];
