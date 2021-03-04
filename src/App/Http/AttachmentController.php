@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Asseco\Attachments\App\Http\Controllers;
 
-use App\Http\Requests\AttachmentRequest;
-use App\Models\Attachment;
+use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
+use Asseco\Attachments\App\Models\Attachment;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
