@@ -1,7 +1,7 @@
 <?php
 
+use Asseco\Attachments\App\Http\Controllers\ModelAttachmentController;
 use Asseco\Attachments\App\Http\Controllers\AttachmentController;
-
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::prefix('api')->middleware('api')->group(function () {
     Route::apiResource('attachments', AttachmentController::class)->except(['update']);
+
+    Route::post('model-attachments', [ModelAttachmentController::class, 'store'])->name('model-attachments.store');
 });

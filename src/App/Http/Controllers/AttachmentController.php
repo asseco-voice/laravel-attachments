@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Asseco\Attachments\App\Http\Controllers;
 
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
@@ -59,6 +61,20 @@ class AttachmentController extends Controller
     {
         return response()->json($attachment);
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param AttachmentRequest $request
+     * @param Attachment $attachment
+     * @return JsonResponse
+     */
+//    public function update(AttachmentRequest $request, Attachment $attachment): JsonResponse
+//    {
+//        $attachment->update($request->validated());
+
+//        return response()->json($attachment->refresh());
+//    }
 
     /**
      * Remove the specified resource from storage.

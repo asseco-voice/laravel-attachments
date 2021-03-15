@@ -1,6 +1,14 @@
 {
     "name": "asseco-voice/laravel-attachments",
     "description": "Laravel support for attachments",
+    "type": "library",
+    "keywords": [
+        "php",
+        "laravel",
+        "attachments",
+        "microservices",
+        "database"
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.4 || ^8.0",
@@ -19,7 +27,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Asseco\\Attachments\\Tests\\": "tests/"
+            "Asseco\\Attachments\\Tests\\": "tests"
         }
     },
     "extra": {
