@@ -47,7 +47,7 @@ class AttachmentControllerTest extends TestCase
             ->postJson(route('attachments.store'), $request)
             ->assertJsonFragment([
                 'id'   => 1,
-                'name' => $request['name']
+                'name' => $request['name'],
             ]);
 
         $this->assertCount(1, Attachment::all());

@@ -43,7 +43,7 @@ class AttachmentController extends Controller
             'mime_type' => $file->getClientMimeType(),
             'size'      => $file->getSize(),
             'path'      => $path,
-            'hash'      => $fileHash
+            'hash'      => $fileHash,
         ];
 
         $attachment = Attachment::query()->create($data);

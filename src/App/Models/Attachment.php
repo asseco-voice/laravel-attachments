@@ -22,6 +22,6 @@ class Attachment extends Model
 
     public function models(string $class): MorphToMany
     {
-        return $this->morphedByMany($class, 'attachable')->withTimestamps();;
+        return $this->morphedByMany($class, 'attachable')->withTimestamps();
     }
 }

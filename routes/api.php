@@ -1,7 +1,7 @@
 <?php
 
-use Asseco\Attachments\App\Http\Controllers\ModelAttachmentController;
 use Asseco\Attachments\App\Http\Controllers\AttachmentController;
+use Asseco\Attachments\App\Http\Controllers\ModelAttachmentController;
 use Illuminate\Support\Facades\Route;
 
 /*
