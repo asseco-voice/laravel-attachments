@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Asseco\Attachments\App\Http\Controllers;
 
-use Asseco\Attachments\App\Traits\Attachable;
 use Asseco\Attachments\App\Http\Requests\ModelAttachmentRequest;
+use Asseco\Attachments\App\Traits\Attachable;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
