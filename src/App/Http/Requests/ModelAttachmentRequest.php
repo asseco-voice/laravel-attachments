@@ -4,7 +4,7 @@ namespace Asseco\Attachments\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ModelAttachmentsRequest extends FormRequest
+class ModelAttachmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
