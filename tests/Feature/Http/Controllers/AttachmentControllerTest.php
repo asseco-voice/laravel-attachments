@@ -6,6 +6,7 @@ namespace Asseco\Attachments\Tests\Feature\Http\Controllers;
 
 use Asseco\Attachments\App\Models\Attachment;
 use Asseco\Attachments\Tests\TestCase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
 class AttachmentControllerTest extends TestCase
@@ -42,15 +43,14 @@ class AttachmentControllerTest extends TestCase
     public function creates_attachment()
     {
         $request = Attachment::factory()->make()->toArray();
+        $name = 'testing.xlsx';
+        $path = 'tests/assets/' . $name;
+        $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
+        $route = 'api/attachments';
 
-        $this
-            ->postJson(route('attachments.store'), $request)
-            ->assertJsonFragment([
-                'id'   => 1,
-                'name' => $request['name'],
-            ]);
-
-        $this->assertCount(1, Attachment::all());
+        $params = [];
+        $response = $this->call('POST', $route, $params, [], ['attachment' => $file]);
+        $response->assertStatus(200);
     }
 
     /** @test */
@@ -61,24 +61,6 @@ class AttachmentControllerTest extends TestCase
         $this
             ->getJson(route('attachments.show', 3))
             ->assertJsonFragment(['id' => 3]);
-    }
-
-    /** @test */
-    public function can_update_attachment()
-    {
-        $attachment = Attachment::factory()->create();
-
-        $request = [
-            'name' => 'updated_name',
-        ];
-
-        $this
-            ->putJson(route('attachments.update', $attachment->id), $request)
-            ->assertJsonFragment([
-                'name' => $request['name'],
-            ]);
-
-        $this->assertEquals($request['name'], $attachment->refresh()->name);
     }
 
     /** @test */
