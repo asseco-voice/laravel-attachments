@@ -63,20 +63,6 @@ class AttachmentController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param AttachmentRequest $request
-     * @param Attachment $attachment
-     * @return JsonResponse
-     */
-//    public function update(AttachmentRequest $request, Attachment $attachment): JsonResponse
-//    {
-//        $attachment->update($request->validated());
-
-//        return response()->json($attachment->refresh());
-//    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param Attachment $attachment
