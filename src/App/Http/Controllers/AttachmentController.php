@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Asseco\Attachments\App\Http\Controllers;
 
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
@@ -41,7 +43,7 @@ class AttachmentController extends Controller
             'mime_type' => $file->getClientMimeType(),
             'size'      => $file->getSize(),
             'path'      => $path,
-            'hash'      => $fileHash
+            'hash'      => $fileHash,
         ];
 
         $attachment = Attachment::query()->create($data);

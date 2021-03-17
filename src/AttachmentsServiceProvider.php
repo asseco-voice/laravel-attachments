@@ -13,7 +13,7 @@ class AttachmentsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/attachments.php', 'attachments');
+        $this->mergeConfigFrom(__DIR__ . '/../config/asseco-attachments.php', 'asseco-attachments');
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
     }
@@ -23,6 +23,6 @@ class AttachmentsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->publishes([__DIR__ . '/../config/attachments.php' => config_path('attachments.php')]);
+        $this->publishes([__DIR__ . '/../config/asseco-attachments.php' => config_path('asseco-attachments.php')]);
     }
 }

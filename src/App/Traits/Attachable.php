@@ -11,6 +11,6 @@ trait Attachable
 {
     public function attachments(): MorphMany
     {
-        return $this->morphMany(Attachment::class, 'model');
+        return $this->morphMany(Attachment::class, 'attachable');
     }
 }

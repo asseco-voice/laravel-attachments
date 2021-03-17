@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Asseco\Attachments\App\Models;
 
+use Asseco\Attachments\Database\Factories\AttachmentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Attachment extends Model
 {
@@ -14,9 +15,13 @@ class Attachment extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function model(): MorphTo
+    protected static function newFactory()
     {
-        return $this->morphTo();
+        return AttachmentFactory::new();
     }
 
+    public function models(string $class): MorphToMany
+    {
+        return $this->morphedByMany($class, 'attachable')->withTimestamps();
+    }
 }

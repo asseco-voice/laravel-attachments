@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Asseco\Attachments\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AttachmentRequest extends FormRequest
+class ModelAttachmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +24,10 @@ class AttachmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'attachment' => 'required|file',
+            'model'     => 'required|string',
+            'model_id'  => 'required',
+            'attachment_ids'   => 'required|array',
+            'attachment_ids.*' => 'exists:attachments,id',
         ];
     }
 }
