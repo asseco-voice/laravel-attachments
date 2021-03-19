@@ -11,6 +11,6 @@ trait Attachable
 {
     public function attachments(): MorphToMany
     {
-        return $this->morphToMany(Attachment::class, 'attachable');
+        return $this->morphToMany(Attachment::class, 'attachable')->withTimestamps();
     }
 }
