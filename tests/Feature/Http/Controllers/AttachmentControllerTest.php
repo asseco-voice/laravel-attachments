@@ -42,15 +42,11 @@ class AttachmentControllerTest extends TestCase
     /** @test */
     public function creates_attachment()
     {
-        $request = Attachment::factory()->make()->toArray();
-        $name = 'testing.xlsx';
-        $path = 'tests/assets/' . $name;
-        $file = new UploadedFile($path, $name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', null, true);
-        $route = 'api/attachments';
+        $file = UploadedFile::fake()->create('testing.xlsx');
 
-        $params = [];
-        $response = $this->call('POST', $route, $params, [], ['attachment' => $file]);
-        $response->assertStatus(200);
+        $this
+            ->postJson(route('attachments.store'), ['attachment' => $file])
+            ->assertStatus(200);
     }
 
     /** @test */
