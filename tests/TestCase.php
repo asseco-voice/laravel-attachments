@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Asseco\Attachments\Tests;
 
 use Asseco\Attachments\AttachmentsServiceProvider;
