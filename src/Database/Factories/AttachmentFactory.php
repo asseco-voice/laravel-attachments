@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Asseco\Attachments\Database\Factories;
 
 use Asseco\Attachments\App\Models\Attachment;
