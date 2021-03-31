@@ -1,8 +1,9 @@
 <p align="center"><a href="https://see.asseco.com" target="_blank"><img src="https://github.com/asseco-voice/art/blob/main/evil_logo.png" width="500"></a></p>
 
-# Laravel Attachments
+# Attachments
 
-Purpose of this repository is to enable attachments for any Laravel model.
+Purpose of this repository is to enable attachment upload and connecting it
+to any Laravel model as an M:M relation.
 
 ## Installation
 
