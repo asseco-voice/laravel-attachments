@@ -17,9 +17,11 @@ class CreateAttachablesTable extends Migration
     {
         Schema::create('attachables', function (Blueprint $table) {
             $table->id();
-            $table->integer('attachment_id')->unsigned();
+            $table->foreignId('attachment_id')->constrained()->onDelete('cascade');
             $table->morphs('attachable');
             $table->timestamps();
+
+            $table->unique('attachment_id', 'attachable_type', 'attachable_id');
         });
     }
 
