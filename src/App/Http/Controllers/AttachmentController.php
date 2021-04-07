@@ -8,6 +8,7 @@ use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
 use Asseco\Attachments\App\Models\Attachment;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
 class AttachmentController extends Controller
 {
@@ -74,5 +75,10 @@ class AttachmentController extends Controller
         $isDeleted = $attachment->delete();
 
         return response()->json($isDeleted ? 'true' : 'false');
+    }
+
+    public function download(Attachment $attachment)
+    {
+        return Storage::download($attachment->path, $attachment->name);
     }
 }
