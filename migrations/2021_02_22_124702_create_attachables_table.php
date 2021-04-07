@@ -21,7 +21,7 @@ class CreateAttachablesTable extends Migration
             $table->morphs('attachable');
             $table->timestamps();
 
-            $table->unique('attachment_id', 'attachable_type', 'attachable_id');
+            $table->unique(['attachment_id', 'attachable_type', 'attachable_id']);
         });
     }
 
