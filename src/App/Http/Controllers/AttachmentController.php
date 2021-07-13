@@ -37,7 +37,7 @@ class AttachmentController extends Controller
         //     abort(400); // abort upload
         // }
 
-        $path = $file->store('attachments');
+        $path = $file->storeAs('attachments', date('U') . '_' . $file->getClientOriginalName());
 
         $data = [
             'name'      => $file->getClientOriginalName(),
@@ -72,6 +72,7 @@ class AttachmentController extends Controller
      */
     public function destroy(Attachment $attachment): JsonResponse
     {
+        Storage::delete($attachment->path);
         $isDeleted = $attachment->delete();
 
         return response()->json($isDeleted ? 'true' : 'false');
