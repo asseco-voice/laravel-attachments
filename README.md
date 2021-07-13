@@ -16,7 +16,7 @@ In order to use the package, migrate the tables with ``artisan migrate``
 and add `Attachable` trait to model you'd like to have attachment support on.
 
 ```php
-use Asseco\Attachments\Contracts\Attachable;
+use Asseco\Attachments\App\Traits\Attachable;
 
 class Product extends Model
 {
