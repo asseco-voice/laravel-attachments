@@ -1,6 +1,5 @@
 <?php
 
-
 use Asseco\Attachments\App\Models\Attachment;
 
 return [
