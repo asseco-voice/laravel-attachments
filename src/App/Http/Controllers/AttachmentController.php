@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\Storage;
 
 class AttachmentController extends Controller
 {
+    public Attachment $attachment;
+
+    public function __construct()
+    {
+        $model = config('asseco-attachments.attachment_model');
+        $this->attachment = new $model;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +27,7 @@ class AttachmentController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(Attachment::all());
+        return response()->json($this->attachment::all());
     }
 
     /**
@@ -33,7 +41,7 @@ class AttachmentController extends Controller
         $file = $request->file('attachment');
         $fileHash = sha1_file($file->path());
 
-        // if( Attachment::query()->where('hash', $fileHash)->firstOrFail() != null) {
+        // if ($this->attachment::query()->where('hash', $fileHash)->firstOrFail() != null) {
         //     abort(400); // abort upload
         // }
 
@@ -47,7 +55,7 @@ class AttachmentController extends Controller
             'hash'      => $fileHash,
         ];
 
-        $attachment = Attachment::query()->create($data);
+        $attachment = $this->attachment::query()->create($data);
 
         return response()->json($attachment->refresh());
     }

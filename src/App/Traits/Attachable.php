@@ -11,6 +11,8 @@ trait Attachable
 {
     public function attachments(): MorphToMany
     {
-        return $this->morphToMany(Attachment::class, 'attachable')->withTimestamps();
+        $model = config('asseco-attachments.attachment_model');
+
+        return $this->morphToMany($model, 'attachable')->withTimestamps();
     }
 }
