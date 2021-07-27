@@ -19,5 +19,5 @@ Route::prefix('api')
     ->group(function () {
         Route::apiResource('attachments', AttachmentController::class)->except(['update']);
 
-        Route::get('attachments/{attachment}/download', [AttachmentController::class, 'download']);
+        Route::get('attachments/{attachment}/download', [AttachmentController::class, 'download'])->name('attachments.download');
     });
