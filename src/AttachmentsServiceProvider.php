@@ -13,8 +13,12 @@ class AttachmentsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        $this->mergeConfigFrom(__DIR__ . '/../config/asseco-attachments.php', 'asseco-attachments');
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+
+        if (config('asseco-attachments.runs_migrations')) {
+            $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        }
     }
 
     /**
@@ -22,6 +26,12 @@ class AttachmentsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->publishes([
+            __DIR__ . '/../migrations' => database_path('migrations'),
+        ], 'asseco-attachments');
+
+        $this->publishes([
+            __DIR__ . '/../config/asseco-attachments.php' => config_path('asseco-attachments.php'),
+        ], 'asseco-attachments');
     }
 }
