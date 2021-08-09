@@ -1,13 +1,12 @@
 <?php
 
-
 use Asseco\Attachments\App\Models\Attachment;
 use Asseco\BlueprintAudit\App\MigrationMethodPicker;
 
 return [
 
     /**
-     * Model bindings
+     * Model bindings.
      */
     'models' => [
         'attachment' => Attachment::class,
