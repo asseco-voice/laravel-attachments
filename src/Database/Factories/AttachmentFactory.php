@@ -9,12 +9,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AttachmentFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Attachment::class;
+    public function modelName()
+    {
+        return config('asseco-attachments.models.attachment');
+    }
 
     /**
      * Define the model's default state.
