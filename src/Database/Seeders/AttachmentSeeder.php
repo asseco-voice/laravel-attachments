@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Asseco\Attachments\Database\Seeders;
 
-use Asseco\Chassis\App\Models\Attachment;
+use Asseco\Attachments\App\Contracts\Attachment;
 use Illuminate\Database\Seeder;
 
 class AttachmentSeeder extends Seeder
