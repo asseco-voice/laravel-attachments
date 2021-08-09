@@ -1,16 +1,36 @@
 <?php
 
+
 use Asseco\Attachments\App\Models\Attachment;
+use Asseco\BlueprintAudit\App\MigrationMethodPicker;
 
 return [
-    /**
-     * Model which will be bound to the app.
-     */
-    'attachment_model' => Attachment::class,
 
     /**
-     * Should the package run the migrations. Set to false if you're publishing
-     * and changing default migrations.
+     * Model bindings
      */
-    'runs_migrations'  => true,
+    'models' => [
+        'attachment' => Attachment::class,
+    ],
+
+    'migrations' => [
+
+        /**
+         * UUIDs as primary keys.
+         */
+        'uuid'       => false,
+
+        /**
+         * Timestamp types.
+         *
+         * @see https://github.com/asseco-voice/laravel-common/blob/master/config/asseco-common.php
+         */
+        'timestamps' => MigrationMethodPicker::PLAIN,
+
+        /**
+         * Should the package run the migrations. Set to false if you're publishing
+         * and changing default migrations.
+         */
+        'run'        => true,
+    ],
 ];

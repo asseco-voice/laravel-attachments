@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Asseco\Attachments\App\Http\Controllers;
 
+use Asseco\Attachments\App\Contracts\Attachment as AttachmentContract;
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
 use Asseco\Attachments\App\Models\Attachment;
 use Exception;
@@ -12,12 +13,11 @@ use Illuminate\Support\Facades\Storage;
 
 class AttachmentController extends Controller
 {
-    public Attachment $attachment;
+    public AttachmentContract $attachment;
 
-    public function __construct()
+    public function __construct(AttachmentContract $attachment)
     {
-        $model = config('asseco-attachments.attachment_model');
-        $this->attachment = new $model;
+        $this->attachment = $attachment;
     }
 
     /**

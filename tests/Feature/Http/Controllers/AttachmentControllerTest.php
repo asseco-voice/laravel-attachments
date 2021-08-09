@@ -14,6 +14,8 @@ class AttachmentControllerTest extends TestCase
     /** @test */
     public function can_fetch_all_attachment_fields()
     {
+        $this->withoutExceptionHandling();
+
         $this
             ->getJson(route('attachments.index'))
             ->assertJsonCount(0);

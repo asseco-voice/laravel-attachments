@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Asseco\Attachments;
 
+use Asseco\Attachments\App\Contracts\Attachment;
 use Illuminate\Support\ServiceProvider;
 
 class AttachmentsServiceProvider extends ServiceProvider
@@ -16,7 +17,7 @@ class AttachmentsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/asseco-attachments.php', 'asseco-attachments');
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
 
-        if (config('asseco-attachments.runs_migrations')) {
+        if (config('asseco-attachments.migrations.run')) {
             $this->loadMigrationsFrom(__DIR__ . '/../migrations');
         }
     }
@@ -33,5 +34,7 @@ class AttachmentsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/asseco-attachments.php' => config_path('asseco-attachments.php'),
         ], 'asseco-attachments');
+
+        $this->app->bind(Attachment::class, config('asseco-attachments.models.attachment'));
     }
 }
