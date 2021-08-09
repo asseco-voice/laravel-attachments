@@ -9,5 +9,4 @@ use Illuminate\Database\Eloquent\Model;
  */
 interface Attachment
 {
-
 }
