@@ -10,7 +10,7 @@ trait Attachable
 {
     public function attachments(): MorphToMany
     {
-        $model = config('asseco-attachments.attachment_model');
+        $model = config('asseco-attachments.models.attachment');
 
         return $this->morphToMany($model, 'attachable')->withTimestamps();
     }
