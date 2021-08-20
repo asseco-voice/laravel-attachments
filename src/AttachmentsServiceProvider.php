@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Asseco\Attachments;
 
 use Asseco\Attachments\App\Contracts\Attachment;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AttachmentsServiceProvider extends ServiceProvider
@@ -36,5 +37,7 @@ class AttachmentsServiceProvider extends ServiceProvider
         ], 'asseco-attachments');
 
         $this->app->bind(Attachment::class, config('asseco-attachments.models.attachment'));
+
+        Route::model('attachment', get_class(app(Attachment::class)));
     }
 }
