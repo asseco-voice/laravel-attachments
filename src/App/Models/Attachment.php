@@ -7,7 +7,7 @@ namespace Asseco\Attachments\App\Models;
 use Asseco\Attachments\Database\Factories\AttachmentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Attachment
 {
@@ -20,8 +20,8 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
         return AttachmentFactory::new();
     }
 
-    public function models(string $class): MorphToMany
+    public function attachables(): HasMany
     {
-        return $this->morphedByMany($class, 'attachable')->withTimestamps();
+        return $this->hasMany(Attachable::class);
     }
 }
