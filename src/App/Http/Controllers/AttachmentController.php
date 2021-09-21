@@ -33,7 +33,7 @@ class AttachmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param AttachmentRequest $request
+     * @param  AttachmentRequest  $request
      * @return JsonResponse
      */
     public function store(AttachmentRequest $request): JsonResponse
@@ -63,7 +63,7 @@ class AttachmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Attachment $attachment
+     * @param  Attachment  $attachment
      * @return JsonResponse
      */
     public function show(Attachment $attachment): JsonResponse
@@ -74,8 +74,9 @@ class AttachmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Attachment $attachment
+     * @param  Attachment  $attachment
      * @return JsonResponse
+     *
      * @throws Exception
      */
     public function destroy(Attachment $attachment): JsonResponse
