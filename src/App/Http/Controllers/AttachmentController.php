@@ -39,23 +39,8 @@ class AttachmentController extends Controller
     public function store(AttachmentRequest $request): JsonResponse
     {
         $file = $request->file('attachment');
-        $fileHash = sha1_file($file->path());
 
-        // if ($this->attachment::query()->where('hash', $fileHash)->firstOrFail() != null) {
-        //     abort(400); // abort upload
-        // }
-
-        $path = $file->storeAs('attachments', date('U') . '_' . $file->getClientOriginalName());
-
-        $data = [
-            'name'      => $file->getClientOriginalName(),
-            'mime_type' => $file->getClientMimeType(),
-            'size'      => $file->getSize(),
-            'path'      => $path,
-            'hash'      => $fileHash,
-        ];
-
-        $attachment = $this->attachment::query()->create($data);
+        $attachment = Attachment::createFrom($file);
 
         return response()->json($attachment->refresh());
     }
