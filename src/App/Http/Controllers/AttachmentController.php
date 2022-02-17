@@ -40,7 +40,7 @@ class AttachmentController extends Controller
     {
         $file = $request->file('attachment');
 
-        $attachment = Attachment::createFrom($file);
+        $attachment = $this->attachment::createFrom($file);
 
         return response()->json($attachment->refresh());
     }
