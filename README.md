@@ -51,4 +51,3 @@ public function store(Request $request, Model $model): JsonResponse
 Publishing the configuration will enable you to change package models as
 well as controlling how migrations behave. If extending the model, make sure
 you're extending the original model in your implementation.
-
