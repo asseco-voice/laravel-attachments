@@ -17,9 +17,15 @@ class CreateFilingPurposesTable extends Migration
     public function up(): void
     {
         Schema::create('filing_purposes', function (Blueprint $table) {
-            $table->id();
+            if (config('asseco-attachments.migrations.uuid')) {
+                $table->uuid('id')->primary();
+            } else {
+                $table->id();
+            }
             $table->string('module');
             $table->string('name');
+            MigrationMethodPicker::pick($table, config('asseco-attachments.migrations.timestamps'));
+
 
         });
     }

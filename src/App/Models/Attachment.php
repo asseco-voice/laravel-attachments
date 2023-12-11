@@ -8,6 +8,7 @@ use Asseco\Attachments\Database\Factories\AttachmentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\UploadedFile;
 
 class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Attachment
@@ -26,7 +27,7 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
         return $this->hasMany(Attachable::class);
     }
 
-    public function filingPurpose(): HasMany
+    public function filingPurpose(): BelongsTo
     {
         return $this->belongsTo(FilingPurpose::class);
     }
