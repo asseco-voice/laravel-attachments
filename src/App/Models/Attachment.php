@@ -26,7 +26,12 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
         return $this->hasMany(Attachable::class);
     }
 
-    public static function createFrom(UploadedFile $file)
+    public function filingPurpose(): HasMany
+    {
+        return $this->belongsTo(FilingPurpose::class);
+    }
+
+    public static function createFrom(UploadedFile $file, $filingPurposeId = null)
     {
         $fileHash = sha1_file($file->path());
 
@@ -39,6 +44,10 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
             'path'      => $path,
             'hash'      => $fileHash,
         ];
+
+        if($filingPurposeId){
+            $data['filing_purpose_id'] = $filingPurposeId;
+        }
 
         return self::query()->create($data);
     }

@@ -39,8 +39,9 @@ class AttachmentController extends Controller
     public function store(AttachmentRequest $request): JsonResponse
     {
         $file = $request->file('attachment');
+        $filingPurposeId = $request->validated()->get('filing_purpose_id');
 
-        $attachment = $this->attachment::createFrom($file);
+        $attachment = $this->attachment::createFrom($file, $filingPurposeId);
 
         return response()->json($attachment->refresh());
     }

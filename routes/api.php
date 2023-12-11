@@ -1,6 +1,7 @@
 <?php
 
 use Asseco\Attachments\App\Http\Controllers\AttachmentController;
+use Asseco\Attachments\App\Http\Controllers\FilingPurposeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +21,6 @@ Route::prefix(config('asseco-attachments.routes.prefix'))
         Route::apiResource('attachments', AttachmentController::class)->except(['update']);
 
         Route::get('attachments/{attachment}/download', [AttachmentController::class, 'download'])->name('attachments.download');
+
+        Route::apiResource('filingPurpose', FilingPurposeController::class);
     });
