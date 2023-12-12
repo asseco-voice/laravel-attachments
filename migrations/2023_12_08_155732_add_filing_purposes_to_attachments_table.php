@@ -7,7 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFilingPurposesToAttachments extends Migration
+class AddFilingPurposesToAttachmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,11 @@ class AddFilingPurposesToAttachments extends Migration
     public function up(): void
     {
         Schema::table('attachments', function (Blueprint $table) {
-            $table->foreignId('filing_purpose_id')->nullable()->constrained();
+            if (config('asseco-attachments.migrations.uuid')) {
+                $table->foreignUuid('filing_purpose_id')->nullable()->constrained();
+            } else {
+                $table->foreignId('filing_purpose_id')->nullable()->constrained();
+            }
         });
     }
 

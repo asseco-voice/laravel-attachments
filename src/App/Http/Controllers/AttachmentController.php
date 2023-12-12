@@ -9,6 +9,7 @@ use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
 use Asseco\Attachments\App\Models\Attachment;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 
 class AttachmentController extends Controller
@@ -38,8 +39,9 @@ class AttachmentController extends Controller
      */
     public function store(AttachmentRequest $request): JsonResponse
     {
-        $file = $request->file('attachment');
-        $filingPurposeId = $request->validated()->get('filing_purpose_id');
+        $validated = $request->validated();
+        $file = Arr::get($validated, 'attachment');
+        $filingPurposeId = Arr::get($validated, 'filing_purpose_id');
 
         $attachment = $this->attachment::createFrom($file, $filingPurposeId);
 
