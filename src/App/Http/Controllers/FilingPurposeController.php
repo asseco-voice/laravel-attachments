@@ -23,12 +23,14 @@ class FilingPurposeController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @param FilingPurposeIndexRequest $request
+     *
+     * @param  FilingPurposeIndexRequest  $request
      * @return JsonResponse
      */
     public function index(FilingPurposeIndexRequest $request): JsonResponse
     {
         $filingPurposes = $this->filingPurpose::where('module', $request->validated())->get();
+
         return response()->json($filingPurposes);
     }
 
@@ -41,14 +43,14 @@ class FilingPurposeController extends Controller
     public function store(FilingPurposeRequest $request): JsonResponse
     {
         $filingPurpose = $this->filingPurpose::query()->create($request->validated());
-        return response()->json($filingPurpose);
 
+        return response()->json($filingPurpose);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param FilingPurpose $filingPurpose
+     * @param  FilingPurpose  $filingPurpose
      * @return JsonResponse
      */
     public function show(FilingPurpose $filingPurpose): JsonResponse
@@ -59,8 +61,8 @@ class FilingPurposeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param FilingPurpose $filingPurpose
-     * @param FilingPurposeRequest $request
+     * @param  FilingPurpose  $filingPurpose
+     * @param  FilingPurposeRequest  $request
      * @return JsonResponse
      */
     public function update(FilingPurpose $filingPurpose, FilingPurposeRequest $request): JsonResponse

@@ -27,7 +27,7 @@ class AttachmentRequest extends FormRequest
     {
         return [
             'attachment' => 'required|file',
-            'filing_purpose_id' => 'sometimes|string|exists:filing_purposes,id'
+            'filing_purpose_id' => 'sometimes|string|exists:filing_purposes,id',
         ];
     }
 }

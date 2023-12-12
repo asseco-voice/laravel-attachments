@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Asseco\BlueprintAudit\App\MigrationMethodPicker;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -35,6 +34,5 @@ class AddFilingPurposesToAttachmentsTable extends Migration
         Schema::table('attachments', function (Blueprint $table) {
             $table->dropColumn('filing_purpose_id');
         });
-
     }
 }
