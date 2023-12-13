@@ -27,6 +27,7 @@ class FilingPurposeRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
+            'label' => 'required|string',
             'module' => 'required|string',
         ];
     }

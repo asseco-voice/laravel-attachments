@@ -24,6 +24,7 @@ class CreateFilingPurposesTable extends Migration
             }
             $table->string('module');
             $table->string('name');
+            $table->string('label');
             MigrationMethodPicker::pick($table, config('asseco-attachments.migrations.timestamps'));
         });
     }
