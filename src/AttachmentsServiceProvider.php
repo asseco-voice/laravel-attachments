@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Asseco\Attachments;
 
 use Asseco\Attachments\App\Contracts\Attachment;
+use Asseco\Attachments\App\Contracts\FilingPurpose;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -39,5 +40,9 @@ class AttachmentsServiceProvider extends ServiceProvider
         $this->app->bind(Attachment::class, config('asseco-attachments.models.attachment'));
 
         Route::model('attachment', get_class(app(Attachment::class)));
+
+        $this->app->bind(FilingPurpose::class, config('asseco-attachments.models.filingPurpose'));
+
+        Route::model('filingPurpose', get_class(app(FilingPurpose::class)));
     }
 }

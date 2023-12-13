@@ -1,6 +1,7 @@
 <?php
 
 use Asseco\Attachments\App\Models\Attachment;
+use Asseco\Attachments\App\Models\FilingPurpose;
 use Asseco\BlueprintAudit\App\MigrationMethodPicker;
 
 return [
@@ -10,6 +11,7 @@ return [
      */
     'models' => [
         'attachment' => Attachment::class,
+        'filingPurpose' => FilingPurpose::class,
     ],
 
     'migrations' => [

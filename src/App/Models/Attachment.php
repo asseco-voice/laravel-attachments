@@ -7,6 +7,7 @@ namespace Asseco\Attachments\App\Models;
 use Asseco\Attachments\Database\Factories\AttachmentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 
@@ -26,7 +27,12 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
         return $this->hasMany(Attachable::class);
     }
 
-    public static function createFrom(UploadedFile $file)
+    public function filingPurpose(): BelongsTo
+    {
+        return $this->belongsTo(FilingPurpose::class);
+    }
+
+    public static function createFrom(UploadedFile $file, $filingPurposeId = null)
     {
         $fileHash = sha1_file($file->path());
 
@@ -39,6 +45,10 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
             'path'      => $path,
             'hash'      => $fileHash,
         ];
+
+        if ($filingPurposeId) {
+            $data['filing_purpose_id'] = $filingPurposeId;
+        }
 
         return self::query()->create($data);
     }
