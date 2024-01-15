@@ -17,7 +17,6 @@ class AddDefaultToFilingPurposesTable extends Migration
     {
         Schema::table('filing_purposes', function (Blueprint $table) {
             $table->boolean('default_purpose')->default(false);
-
         });
     }
 
