@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix(config('asseco-attachments.routes.prefix'))
     ->middleware(config('asseco-attachments.routes.middleware'))
     ->group(function () {
-        Route::apiResource('attachments', AttachmentController::class)->except(['update']);
+        Route::apiResource('attachments', AttachmentController::class);
 
         Route::get('attachments/{attachment}/download', [AttachmentController::class, 'download'])->name('attachments.download');
 
