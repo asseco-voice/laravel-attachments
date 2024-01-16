@@ -44,10 +44,10 @@ class FilingPurposeController extends Controller
     {
         $validated = $request->validated();
 
-        if ($validated['default_purpose']) {
+        if ($validated['default']) {
             $this->filingPurpose::query()
-                ->where('default_purpose', true)
-                ->update(['default_purpose' => false]);
+                ->where('default', true)
+                ->update(['default' => false]);
         }
         $filingPurpose = $this->filingPurpose::query()->create($validated);
 
@@ -76,10 +76,10 @@ class FilingPurposeController extends Controller
     {
         $validated = $request->validated();
 
-        if ($validated['default_purpose'] && !$filingPurpose->default_purpose) {
+        if ($validated['default'] && !$filingPurpose->default_purpose) {
             $this->filingPurpose::query()
-                ->where('default_purpose', true)
-                ->update(['default_purpose' => false]);
+                ->where('default', true)
+                ->update(['default' => false]);
         }
         $filingPurpose->update($validated);
 
