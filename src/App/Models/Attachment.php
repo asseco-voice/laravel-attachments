@@ -39,11 +39,11 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
         $path = $file->storeAs('attachments', date('U') . '_' . $file->getClientOriginalName());
 
         $data = [
-            'name' => $file->getClientOriginalName(),
+            'name'      => $file->getClientOriginalName(),
             'mime_type' => $file->getClientMimeType(),
-            'size' => $file->getSize(),
-            'path' => $path,
-            'hash' => $fileHash,
+            'size'      => $file->getSize(),
+            'path'      => $path,
+            'hash'      => $fileHash,
         ];
 
         if ($filingPurposeId) {
