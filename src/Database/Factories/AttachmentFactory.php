@@ -21,11 +21,11 @@ class AttachmentFactory extends Factory
     public function definition()
     {
         return [
-            'name'       => $this->faker->word,
-            'mime_type'  => $this->faker->mimeType,
-            'size'       => $this->faker->numberBetween(10, 10000),
-            'path'       => $this->faker->url,
-            'hash'       => $this->faker->sha1,
+            'name' => $this->faker->word,
+            'mime_type' => $this->faker->mimeType,
+            'size' => $this->faker->numberBetween(10, 10000),
+            'path' => $this->faker->url,
+            'hash' => $this->faker->sha1,
             'created_at' => now(),
             'updated_at' => now(),
         ];

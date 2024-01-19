@@ -42,7 +42,14 @@ class FilingPurposeController extends Controller
      */
     public function store(FilingPurposeRequest $request): JsonResponse
     {
-        $filingPurpose = $this->filingPurpose::query()->create($request->validated());
+        $validated = $request->validated();
+
+        if ($validated['default']) {
+            $this->filingPurpose::query()
+                ->where('default', true)
+                ->update(['default' => false]);
+        }
+        $filingPurpose = $this->filingPurpose::query()->create($validated);
 
         return response()->json($filingPurpose);
     }
@@ -67,7 +74,14 @@ class FilingPurposeController extends Controller
      */
     public function update(FilingPurpose $filingPurpose, FilingPurposeRequest $request): JsonResponse
     {
-        $filingPurpose->update($request->validated());
+        $validated = $request->validated();
+
+        if ($validated['default'] && !$filingPurpose->default_purpose) {
+            $this->filingPurpose::query()
+                ->where('default', true)
+                ->update(['default' => false]);
+        }
+        $filingPurpose->update($validated);
 
         return response()->json($filingPurpose->refresh());
     }

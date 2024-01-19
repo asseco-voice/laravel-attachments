@@ -29,6 +29,7 @@ class FilingPurposeRequest extends FormRequest
             'name' => 'required|string',
             'label' => 'required|string',
             'module' => 'required|string',
+            'default' => 'required|boolean',
         ];
     }
 }
