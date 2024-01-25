@@ -6,6 +6,7 @@ namespace Asseco\Attachments\App\Http\Controllers;
 
 use Asseco\Attachments\App\Contracts\Attachment as AttachmentContract;
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
+use Asseco\Attachments\App\Http\Requests\AttachmentUpdateRequest;
 use Asseco\Attachments\App\Models\Attachment;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -66,7 +67,7 @@ class AttachmentController extends Controller
      * @param  AttachmentRequest  $request
      * @return JsonResponse
      */
-    public function update(Attachment $attachment, AttachmentRequest $request): JsonResponse
+    public function update(Attachment $attachment, AttachmentUpdateRequest $request): JsonResponse
     {
         $attachment->update($request->validated());
 
