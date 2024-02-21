@@ -42,22 +42,22 @@ return [
 
     // Cached attachments
     'cache_upload' => [
-        'enabled'           => env('ATTACHMENTS_CACHE_ENABLED', false),
+        'enabled' => env('ATTACHMENTS_CACHE_ENABLED', false),
 
         // where are the files stored: in filesystem (FILE) or Cache (CACHE)
-        'type'              => env('ATTACHMENTS_CACHE_TYPE', 'FILE'),
+        'type' => env('ATTACHMENTS_CACHE_TYPE', 'FILE'),
 
         // if type = FILE, files are stored in this path
-        'file_location'     => env('ATTACHMENTS_CACHE_LOCATION', '/tmp/'),
+        'file_location' => env('ATTACHMENTS_CACHE_LOCATION', '/tmp/'),
 
         // Cache key where mapping is saved [attachment_id => filename, attachment_id => filename, ...]
-        'cache_map_key'     => env('ATTACHMENTS_CACHE_MAP_KEY', 'ASEE_ATTACHMENTS_MAP'),
+        'cache_map_key' => env('ATTACHMENTS_CACHE_MAP_KEY', 'ASEE_ATTACHMENTS_MAP'),
 
         // Cache key prefix when Cache type is used - attachments are stored separately
         // key is determined as: prefix + attachment_id
-        'cache_key_prefix'  => env('ATTACHMENTS_CACHE_KEY_PREFIX', 'ASEE_ATTACHMENT_'),
+        'cache_key_prefix' => env('ATTACHMENTS_CACHE_KEY_PREFIX', 'ASEE_ATTACHMENT_'),
 
         // how long is cache valid, in seconds
-        'cache_time'        => env('ATTACHMENTS_CACHE_TIME', 3600),
+        'cache_time' => env('ATTACHMENTS_CACHE_TIME', 3600),
     ],
 ];
