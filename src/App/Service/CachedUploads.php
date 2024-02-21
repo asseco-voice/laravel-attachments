@@ -115,7 +115,7 @@ class CachedUploads
         }
 
         if ($success) {
-            Log::info('Attachment ' . $attachment->id . ' stored in cache: ' . ($to ?? $cacheKey), ['method' => __METHOD__]);
+            Log::debug('Attachment ' . $attachment->id . ' stored in cache: ' . ($to ?? $cacheKey), ['method' => __METHOD__]);
         }
 
         return $success;
