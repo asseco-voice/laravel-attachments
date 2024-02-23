@@ -8,6 +8,7 @@ use Asseco\Attachments\App\Contracts\Attachment as AttachmentContract;
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
 use Asseco\Attachments\App\Http\Requests\AttachmentUpdateRequest;
 use Asseco\Attachments\App\Models\Attachment;
+use Asseco\Attachments\App\Service\CachedUploads;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
@@ -45,6 +46,8 @@ class AttachmentController extends Controller
         $filingPurposeId = Arr::get($validated, 'filing_purpose_id');
 
         $attachment = $this->attachment::createFrom($file, $filingPurposeId);
+
+        CachedUploads::store($file, $attachment);
 
         return response()->json($attachment->refresh());
     }

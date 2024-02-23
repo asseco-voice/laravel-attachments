@@ -46,6 +46,26 @@ public function store(Request $request, Model $model): JsonResponse
 }
 ```
 
+# Cached attachments
+
+Option to keep attachments in filesystem, or cache.
+Based on value ATTACHMENTS_CACHE_TYPE, there are two scenarios:
+- FILE
+  - attachments are stored in filesystem (ATTACHMENTS_CACHE_LOCATION)
+  - mapping is saved in cache key ATTACHMENTS_CACHE_MAP_KEY 
+    - [attachment1->id => path1, attachment2->id => path2, ...]
+- CACHE
+  - attachment content is stored in cache, 1 attachment = 1 cache key
+  - cache key is named as: ATTACHMENTS_CACHE_KEY_PREFIX + attachment_id
+
+ENV variables which controls the behaviour:
+ - ATTACHMENTS_CACHE_ENABLED=true   (default: false)
+ - ATTACHMENTS_CACHE_MAP_KEY="ASEE_ATTACHMENTS_MAP"  (default: ASEE_ATTACHMENTS_MAP)
+ - ATTACHMENTS_CACHE_TYPE="FILE"  (default: FILE)
+ - ATTACHMENTS_CACHE_LOCATION="/tmp/"   (default: sys_get_temp_dir())
+ - ATTACHMENTS_CACHE_KEY_PREFIX="ASEE_ATTACHMENT_"   (default: ASEE_ATTACHMENT_)
+ - ATTACHMENTS_CACHE_TIME=3600   (default: 3600 seconds)
+
 # Extending the package
 
 Publishing the configuration will enable you to change package models as
