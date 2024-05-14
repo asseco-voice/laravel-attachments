@@ -13,6 +13,8 @@ class FilingPurpose extends Model implements \Asseco\Attachments\App\Contracts\F
     use HasFactory;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
+	
+	protected $keyType = 'string';
 
     public function attachments(): HasMany
     {
