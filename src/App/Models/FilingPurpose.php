@@ -14,6 +14,8 @@ class FilingPurpose extends Model implements \Asseco\Attachments\App\Contracts\F
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
+    protected $keyType = 'string';
+
     public function attachments(): HasMany
     {
         return $this->hasMany(Attachment::class);
