@@ -6,6 +6,7 @@ namespace Asseco\Attachments\App\Http\Controllers;
 
 use Asseco\Attachments\App\Contracts\Attachment as AttachmentContract;
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
+use Asseco\Attachments\App\Http\Requests\DeleteAttachmentsRequest;
 use Asseco\Attachments\App\Http\Requests\AttachmentUpdateRequest;
 use Asseco\Attachments\App\Models\Attachment;
 use Asseco\Attachments\App\Service\CachedUploads;
@@ -66,8 +67,8 @@ class AttachmentController extends Controller
     /**
      * Update the specified resource.
      *
-     * @param  Attachment  $attachment
-     * @param  AttachmentRequest  $request
+     * @param Attachment $attachment
+     * @param AttachmentUpdateRequest $request
      * @return JsonResponse
      */
     public function update(Attachment $attachment, AttachmentUpdateRequest $request): JsonResponse
@@ -96,5 +97,30 @@ class AttachmentController extends Controller
     public function download(Attachment $attachment)
     {
         return Storage::download($attachment->path, $attachment->name);
+    }
+
+    /**
+     * Remove multiple resources from storage.
+     *
+     * @param DeleteAttachmentsRequest $request
+     * @return JsonResponse
+     */
+    public function bulkDelete(DeleteAttachmentsRequest $request): JsonResponse
+    {
+        $attachmentIds = $request->input('attachment_ids');
+        try {
+            $paths = Attachment::whereIn('id', $attachmentIds)->pluck('path');
+            Attachment::whereIn('id', $attachmentIds)->delete();
+            foreach ($paths as $path) {
+                Storage::delete($path);
+            }
+            return response()->json('Successfuly deleted attachments');
+        } catch (Exception $e) {
+            Log::error('Failed to bulk delete attachments', [
+                'attachment_ids' => $attachmentIds,
+                'exception' => $e,
+            ]);
+            return response()->json('Failed to delete attachments', 500);
+        }
     }
 }
