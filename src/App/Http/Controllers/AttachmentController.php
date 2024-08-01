@@ -13,6 +13,7 @@ use Asseco\Attachments\App\Service\CachedUploads;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class AttachmentController extends Controller
