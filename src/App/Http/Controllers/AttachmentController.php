@@ -109,19 +109,29 @@ class AttachmentController extends Controller
     public function bulkDelete(DeleteAttachmentsRequest $request): JsonResponse
     {
         $attachmentIds = $request->input('attachment_ids');
-        try {
-            $paths = Attachment::whereIn('id', $attachmentIds)->pluck('path');
-            Attachment::whereIn('id', $attachmentIds)->delete();
-            foreach ($paths as $path) {
-                Storage::delete($path);
+        $deleted = [];
+        $notDeleted = [];
+        $paths = Attachment::whereIn('id', $attachmentIds)->pluck('path', 'id');
+        foreach ($attachmentIds as $id) {
+            $path = $paths->get($id);
+            try {
+                Attachment::where('id', $id)->delete();
+                if ($path) {
+                    Storage::delete($path);
+                }
+                $deleted[] = $id;
+            } catch (Exception $e) {
+                $notDeleted[] = $id;
+                Log::error('Failed to delete attachment', [
+                    'attachment_id' => $id,
+                    'exception' => $e,
+                ]);
             }
-            return response()->json('Successfuly deleted attachments');
-        } catch (Exception $e) {
-            Log::error('Failed to bulk delete attachments', [
-                'attachment_ids' => $attachmentIds,
-                'exception' => $e,
-            ]);
-            return response()->json('Failed to delete attachments', 500);
         }
+        return response()->json([
+            'message' => 'Bulk delete operation completed',
+            'deleted' => $deleted,
+            'not_deleted' => $notDeleted,
+        ]);
     }
 }
