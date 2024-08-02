@@ -128,6 +128,7 @@ class AttachmentController extends Controller
                 ]);
             }
         }
+
         return response()->json([
             'message' => 'Bulk delete operation completed',
             'deleted' => $deleted,
