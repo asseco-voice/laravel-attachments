@@ -6,8 +6,8 @@ namespace Asseco\Attachments\App\Http\Controllers;
 
 use Asseco\Attachments\App\Contracts\Attachment as AttachmentContract;
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
-use Asseco\Attachments\App\Http\Requests\DeleteAttachmentsRequest;
 use Asseco\Attachments\App\Http\Requests\AttachmentUpdateRequest;
+use Asseco\Attachments\App\Http\Requests\DeleteAttachmentsRequest;
 use Asseco\Attachments\App\Models\Attachment;
 use Asseco\Attachments\App\Service\CachedUploads;
 use Exception;
@@ -68,8 +68,8 @@ class AttachmentController extends Controller
     /**
      * Update the specified resource.
      *
-     * @param Attachment $attachment
-     * @param AttachmentUpdateRequest $request
+     * @param  Attachment  $attachment
+     * @param  AttachmentUpdateRequest  $request
      * @return JsonResponse
      */
     public function update(Attachment $attachment, AttachmentUpdateRequest $request): JsonResponse
@@ -103,7 +103,7 @@ class AttachmentController extends Controller
     /**
      * Remove multiple resources from storage.
      *
-     * @param DeleteAttachmentsRequest $request
+     * @param  DeleteAttachmentsRequest  $request
      * @return JsonResponse
      */
     public function bulkDelete(DeleteAttachmentsRequest $request): JsonResponse
