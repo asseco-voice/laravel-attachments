@@ -7,11 +7,13 @@ namespace Asseco\Attachments\App\Http\Controllers;
 use Asseco\Attachments\App\Contracts\Attachment as AttachmentContract;
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
 use Asseco\Attachments\App\Http\Requests\AttachmentUpdateRequest;
+use Asseco\Attachments\App\Http\Requests\DeleteAttachmentsRequest;
 use Asseco\Attachments\App\Models\Attachment;
 use Asseco\Attachments\App\Service\CachedUploads;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class AttachmentController extends Controller
@@ -67,7 +69,7 @@ class AttachmentController extends Controller
      * Update the specified resource.
      *
      * @param  Attachment  $attachment
-     * @param  AttachmentRequest  $request
+     * @param  AttachmentUpdateRequest  $request
      * @return JsonResponse
      */
     public function update(Attachment $attachment, AttachmentUpdateRequest $request): JsonResponse
@@ -96,5 +98,41 @@ class AttachmentController extends Controller
     public function download(Attachment $attachment)
     {
         return Storage::download($attachment->path, $attachment->name);
+    }
+
+    /**
+     * Remove multiple resources from storage.
+     *
+     * @param  DeleteAttachmentsRequest  $request
+     * @return JsonResponse
+     */
+    public function bulkDelete(DeleteAttachmentsRequest $request): JsonResponse
+    {
+        $attachmentIds = $request->input('attachment_ids');
+        $deleted = [];
+        $notDeleted = [];
+        $paths = Attachment::whereIn('id', $attachmentIds)->pluck('path', 'id');
+        foreach ($attachmentIds as $id) {
+            $path = $paths->get($id);
+            try {
+                Attachment::where('id', $id)->delete();
+                if ($path) {
+                    Storage::delete($path);
+                }
+                $deleted[] = $id;
+            } catch (Exception $e) {
+                $notDeleted[] = $id;
+                Log::error('Failed to delete attachment', [
+                    'attachment_id' => $id,
+                    'exception' => $e,
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Bulk delete operation completed',
+            'deleted' => $deleted,
+            'not_deleted' => $notDeleted,
+        ]);
     }
 }
