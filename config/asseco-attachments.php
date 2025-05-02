@@ -11,7 +11,7 @@ return [
      */
     'models' => [
         'attachment' => Attachment::class,
-        'filingPurpose' => FilingPurpose::class,
+        'filing_purpose' => FilingPurpose::class,
     ],
 
     'migrations' => [

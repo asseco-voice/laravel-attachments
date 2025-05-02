@@ -41,8 +41,8 @@ class AttachmentsServiceProvider extends ServiceProvider
 
         Route::model('attachment', get_class(app(Attachment::class)));
 
-        $this->app->bind(FilingPurpose::class, config('asseco-attachments.models.filingPurpose'));
+        $this->app->bind(FilingPurpose::class, config('asseco-attachments.models.filing_purpose'));
 
-        Route::model('filingPurpose', get_class(app(FilingPurpose::class)));
+        Route::model('filing_purpose', get_class(app(FilingPurpose::class)));
     }
 }
