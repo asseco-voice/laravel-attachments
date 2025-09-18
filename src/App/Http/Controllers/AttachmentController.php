@@ -8,6 +8,7 @@ use Asseco\Attachments\App\Contracts\Attachment as AttachmentContract;
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
 use Asseco\Attachments\App\Http\Requests\AttachmentUpdateRequest;
 use Asseco\Attachments\App\Http\Requests\DeleteAttachmentsRequest;
+use Asseco\Attachments\App\Http\Requests\DownloadAttachmentsRequest;
 use Asseco\Attachments\App\Models\Attachment;
 use Asseco\Attachments\App\Service\CachedUploads;
 use Exception;
@@ -15,6 +16,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use ZipStream\ZipStream;
 
 class AttachmentController extends Controller
 {
@@ -145,5 +148,69 @@ class AttachmentController extends Controller
             'deleted' => $deleted,
             'not_deleted' => $notDeleted,
         ]);
+    }
+
+    public function bulkDownload(DownloadAttachmentsRequest $request): StreamedResponse
+    {
+        $attachmentIds = $request->input('attachment_ids');
+        $attachments = Attachment::whereIn('id', $attachmentIds)->get();
+
+        return response()->stream(function () use ($attachments) {
+            $zip = new ZipStream(
+                comment: 'Generated on ' . now()->toDateTimeString(),
+                sendHttpHeaders: true,
+                outputName: 'attachments_' . date('Y-m-d_H-i-s') . '.zip'
+            );
+
+            $successCount = 0;
+            $failedFiles = [];
+
+            foreach ($attachments as $attachment) {
+                if(Storage::exists($attachment->path)) {
+                    try {
+                        $zip->addFileFromPath(
+                            fileName: $this->generateUniqueFilename($attachment, $successCount),
+                            path: Storage::path($attachment->path)
+                        );
+                        $successCount++;
+                    } catch (Exception $e) {
+                        $failedFiles[] = $attachment->name;
+                        Log::warning('Failed to add file to ZIP', [
+                            'attachment_id' => $attachment->id,
+                            'filename' => $attachment->name,
+                            'error' => $e->getMessage()
+                        ]);
+                    }
+                } else {
+                    $failedFiles[] = $attachment->name . ' (file not found)';
+                }
+            }
+
+            if (!empty($failedFiles)) {
+                $summary = "Download Summary\n================\n\n";
+                $summary .= "Successfully downloaded: {$successCount} files\n";
+                $summary .= "Failed files:\n" . implode("\n", $failedFiles);
+
+                $zip->addFile('_download_summary.txt', $summary);
+            }
+
+            $zip->finish();
+        }, 200, [
+            'Content-Type' => 'application/zip',
+            'Content-Disposition' => 'attachment; filename="attachments_' . date('Y-m-d_H-i-s') . '.zip"',
+            'Cache-Control' => 'no-cache',
+            'X-Accel-Buffering' => 'no',
+        ]);
+    }
+
+    private function generateUniqueFilename(Attachment $attachment, int $index): string
+    {
+        $extension = pathinfo($attachment->name, PATHINFO_EXTENSION);
+        $basename = pathinfo($attachment->name, PATHINFO_FILENAME);
+
+        // Sanitize and ensure uniqueness
+        $sanitized = preg_replace('/[^a-zA-Z0-9._-]/', '_', $basename);
+
+        return $sanitized . '_' . $attachment->id . '.' . $extension;
     }
 }
