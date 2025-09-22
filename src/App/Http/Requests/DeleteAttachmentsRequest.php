@@ -26,8 +26,9 @@ class DeleteAttachmentsRequest extends FormRequest
     public function rules()
     {
         return [
-            'attachment_ids' => 'required|array',
-            'attachment_ids.*' => 'exists:attachments,id',
+            'with_attachable'   => 'boolean|nullable',
+            'attachment_ids'    => 'required|array',
+            'attachment_ids.*'  => 'exists:attachments,id',
         ];
     }
 }
