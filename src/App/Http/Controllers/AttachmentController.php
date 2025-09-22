@@ -113,6 +113,7 @@ class AttachmentController extends Controller
 
     /**
      * Remove multiple resources from storage.
+     * Hard delete
      *
      * @param  DeleteAttachmentsRequest  $request
      * @return JsonResponse
@@ -135,7 +136,48 @@ class AttachmentController extends Controller
                 $notDeleted[] = $id;
                 Log::error('Failed to delete attachment', [
                     'attachment_id' => $id,
-                    'exception' => $e,
+                    'exception' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Bulk delete operation completed',
+            'deleted' => $deleted,
+            'not_deleted' => $notDeleted,
+        ]);
+    }
+
+    /**
+     * @param DeleteAttachmentsRequest $request
+     * @return JsonResponse
+     */
+    public function bulkSoftDelete(DeleteAttachmentsRequest $request): JsonResponse
+    {
+        $attachmentIds = $request->input('attachment_ids');
+        $deleteAttachable = $request->boolean('with_attachable', true);
+
+        $deleted = [];
+        $notDeleted = [];
+        $attachments = $this->attachment::whereIn('id', $attachmentIds)->get();
+        foreach ($attachments as $attachment) {
+            $path = $attachment->path;
+            try {
+                $attachment->delete();
+                if ($path) {
+                    Storage::delete($path);
+                }
+
+                if ($deleteAttachable) {
+                    $attachment->attachables()->delete();
+                }
+
+                $deleted[] = $attachment->id;
+            } catch (Exception $e) {
+                $notDeleted[] = $attachment->id;
+                Log::error('Failed to delete attachment', [
+                    'attachment_id' => $attachment->id,
+                    'exception' => $e->getMessage(),
                 ]);
             }
         }
