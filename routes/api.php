@@ -25,6 +25,7 @@ Route::prefix(config('asseco-attachments.routes.prefix'))
         Route::apiResource('attachments', AttachmentController::class);
 
         Route::get('attachments/{attachment}/download', [AttachmentController::class, 'download'])->name('attachments.download');
+        Route::post('attachments/bulk-download', [AttachmentController::class, 'bulkDownload'])->name('attachments.bulkDownload');
 
         Route::apiResource('filing-purpose', FilingPurposeController::class);
     });
