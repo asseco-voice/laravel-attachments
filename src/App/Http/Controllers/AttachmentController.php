@@ -12,10 +12,13 @@ use Asseco\Attachments\App\Http\Requests\DownloadAttachmentsRequest;
 use Asseco\Attachments\App\Models\Attachment;
 use Asseco\Attachments\App\Service\CachedUploads;
 use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use ZipStream\ZipStream;
 
@@ -111,7 +114,14 @@ class AttachmentController extends Controller
 
     public function download(Attachment $attachment)
     {
-        return Storage::download($attachment->path, $attachment->name);
+        if (Storage::exists($attachment->path)) {
+            return Storage::download($attachment->path, $attachment->name);
+        }
+        else if (config('asseco-attachments.fallback_download.enabled')) {
+            return $this->tryFallbackDownload($attachment);
+        }
+
+        throw new FileNotFoundException($attachment->path . ' not found in Storage!', 404);
     }
 
     /**
@@ -254,5 +264,40 @@ class AttachmentController extends Controller
         $sanitized = preg_replace('/[^a-zA-Z0-9._-]/', '_', $basename);
 
         return $sanitized . '_' . $attachment->id . '.' . $extension;
+    }
+
+
+    /**
+     * @param Attachment $attachment
+     * @return StreamedResponse
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    private function tryFallbackDownload(Attachment $attachment) : StreamedResponse {
+        $url = (config('asseco-attachments.fallback_download.url'));
+        if (empty($url)) {
+            throw new Exception('Fallback download URL is not set!');
+        }
+
+        // append attachment ID into URL
+        $url = rtrim($url, '/') . '/' . $attachment->id;
+        $response = Http::get(
+            $url,
+            [
+                'service'   => strtolower(Str::snake(config('app.name', ''))),
+                'path'      => $attachment->path,
+            ]
+        )->throw();
+
+        $contentType = $response->header('Content-Type') ?: $attachment->mime_type;
+
+        return response()->streamDownload(
+            function () use ($response) {
+                echo $response->body();
+            },
+            $attachment->name ?? 'download.bin',
+            [
+                'Content-Type' => $contentType,
+            ]
+        );
     }
 }

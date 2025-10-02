@@ -60,4 +60,15 @@ return [
         // how long is cache valid, in seconds
         'cache_time' => env('ATTACHMENTS_CACHE_TIME', 3600),
     ],
+
+
+    // group attachments into "year / month / day" format folder structure
+    'path_group_by_ymd' => env('ATTACHMENTS_GROUP_BY_YMD', false),
+
+
+    // if Attachment is not found in Storage, check from this URL
+    'fallback_download' => [
+        'enabled'   => env('ATTACHMENTS_FALLBACK_DOWNLOAD_ENABLED', false),
+        'url'       => env('ATTACHMENTS_FALLBACK_DOWNLOAD_URL', ''),
+    ]
 ];

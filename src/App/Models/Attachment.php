@@ -36,7 +36,12 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
     {
         $fileHash = sha1_file($file->path());
 
-        $path = $file->storeAs('attachments', date('U') . '_' . $file->getClientOriginalName());
+        $basePath = 'attachments';
+        if (config('asseco-attachments.path_group_by_ymd')) {
+            $basePath .= '/' . date('Y/m/d');
+        }
+
+        $path = $file->storeAs($basePath, date('U') . '_' . $file->getClientOriginalName());
 
         $data = [
             'name' => $file->getClientOriginalName(),
