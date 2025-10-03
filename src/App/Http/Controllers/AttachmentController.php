@@ -220,9 +220,9 @@ class AttachmentController extends Controller
             foreach ($attachments as $attachment) {
                 if(Storage::exists($attachment->path)) {
                     try {
-                        $zip->addFileFromPath(
-                            fileName: $this->generateUniqueFilename($attachment, $successCount),
-                            path: Storage::path($attachment->path)
+                        $zip->addFile(
+                            $this->generateUniqueFilename($attachment, $successCount),
+                            Storage::get($attachment->path)
                         );
                         $successCount++;
                     } catch (Exception $e) {
@@ -241,7 +241,7 @@ class AttachmentController extends Controller
             if (!empty($failedFiles)) {
                 $summary = "Download Summary\n================\n\n";
                 $summary .= "Successfully downloaded: {$successCount} files\n";
-                $summary .= "Failed files:\n" . implode("\n", $failedFiles);
+                $summary .= "Failed files:\n" . implode("\n - ", $failedFiles);
 
                 $zip->addFile('_download_summary.txt', $summary);
             }
