@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Attachment
 {
@@ -32,7 +33,7 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
         return $this->belongsTo(FilingPurpose::class);
     }
 
-    public static function createFrom(UploadedFile $file, $filingPurposeId = null)
+    public static function createFrom(UploadedFile $file, $filingPurposeId = null, ?string $originalName = null)
     {
         $fileHash = sha1_file($file->path());
 
@@ -41,14 +42,28 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
             $basePath .= '/' . date('Y/m/d');
         }
 
-        $path = $file->storeAs($basePath, date('U') . '_' . $file->getClientOriginalName());
+        $name = $originalName ?: $file->getClientOriginalName();
+
+        // clean & sanitize
+        $name = Str::ascii(Str::of($name)->squish());
+        $name = preg_replace('/[^A-Za-z0-9._\-\pL ]/u', '_', $name);
+        $name = substr($name, 0, 255);
+
+        if ($originalName) {
+            // potential fix extension
+            $name = pathinfo($name, PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension() ?: 'bin';
+            $name = "{$name}.{$extension}";
+        }
+
+        $path = $file->storeAs($basePath, date('U') . '_' . $name);
 
         $data = [
-            'name' => $file->getClientOriginalName(),
+            'name'      => $name,
             'mime_type' => $file->getClientMimeType(),
-            'size' => $file->getSize(),
-            'path' => $path,
-            'hash' => $fileHash,
+            'size'      => $file->getSize(),
+            'path'      => $path,
+            'hash'      => $fileHash,
         ];
 
         if ($filingPurposeId) {

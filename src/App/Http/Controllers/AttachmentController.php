@@ -52,6 +52,7 @@ class AttachmentController extends Controller
         $validated = $request->validated();
         $file = Arr::get($validated, 'attachment');
         $filingPurposeId = Arr::get($validated, 'filing_purpose_id');
+        $originalName = Arr::get($validated, 'original_name');
 
         if ($impersonateUserId = $request->header('impersonate-user-id')) {
             // When request comes from background service, and we want to know who is responsible for attachment
@@ -64,7 +65,7 @@ class AttachmentController extends Controller
             }
         }
 
-        $attachment = $this->attachment::createFrom($file, $filingPurposeId);
+        $attachment = $this->attachment::createFrom($file, $filingPurposeId, $originalName);
 
         CachedUploads::store($file, $attachment);
 

@@ -26,8 +26,9 @@ class AttachmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'attachment' => 'required|file',
+            'attachment'        => 'required|file',
             'filing_purpose_id' => 'sometimes|string|exists:filing_purposes,id',
+            'original_name'     => 'nullable|string|max:250',
         ];
     }
 }
