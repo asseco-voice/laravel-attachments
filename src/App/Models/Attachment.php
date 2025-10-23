@@ -52,7 +52,7 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
         if ($originalName) {
             // potential fix extension
             $name = pathinfo($name, PATHINFO_FILENAME);
-            $extension = $file->getClientOriginalExtension() ?: 'bin';
+            $extension = $file->getClientOriginalExtension() ?: ($file->extension() ?: (pathinfo($name, PATHINFO_EXTENSION) ?: 'bin'));
             $name = "{$name}.{$extension}";
         }
 
