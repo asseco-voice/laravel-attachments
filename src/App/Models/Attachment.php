@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Asseco\Attachments\App\Models;
 
 use Asseco\Attachments\Database\Factories\AttachmentFactory;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
+/**
+ * @property string $id
+ * @property string $name
+ * @property string $mime_type
+ * @property int $size
+ * @property string $path
+ * @property string $hash
+ * @property CarbonInterface $created_at
+ * @property ?string $filing_purpose_id
+ * @property ?string $external_id
+ */
 class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Attachment
 {
     use HasFactory;
@@ -33,7 +45,12 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
         return $this->belongsTo(FilingPurpose::class);
     }
 
-    public static function createFrom(UploadedFile $file, $filingPurposeId = null, ?string $originalName = null)
+    public static function createFrom(
+        UploadedFile $file,
+        $filingPurposeId = null,
+        ?string $originalName = null,
+        ?string $externalId = null
+    ) : self
     {
         $fileHash = sha1_file($file->path());
 
@@ -59,11 +76,37 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
         $path = $file->storeAs($basePath, date('U') . '_' . $name);
 
         $data = [
-            'name'      => $name,
-            'mime_type' => $file->getClientMimeType(),
-            'size'      => $file->getSize(),
-            'path'      => $path,
-            'hash'      => $fileHash,
+            'name'          => $name,
+            'mime_type'     => $file->getClientMimeType(),
+            'size'          => $file->getSize(),
+            'path'          => $path,
+            'hash'          => $fileHash,
+            'external_id'   => $externalId,
+        ];
+
+        if ($filingPurposeId) {
+            $data['filing_purpose_id'] = $filingPurposeId;
+        }
+
+        return self::query()->create($data);
+    }
+
+    public static function register(
+        string $originalName,
+        string $mimeType,
+        string $path,
+        int $size,
+        ?string $filingPurposeId = null,
+        ?string $externalId = null,
+    ) : self {
+
+        $data = [
+            'name'          => $originalName,
+            'mime_type'     => $mimeType,
+            'size'          => $size,
+            'path'          => $path,
+            'hash'          => time(),
+            'external_id'   => $externalId,
         ];
 
         if ($filingPurposeId) {

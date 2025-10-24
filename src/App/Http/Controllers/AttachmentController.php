@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Asseco\Attachments\App\Http\Controllers;
 
 use Asseco\Attachments\App\Contracts\Attachment as AttachmentContract;
+use Asseco\Attachments\App\Http\Requests\AttachmentRegisterRequest;
 use Asseco\Attachments\App\Http\Requests\AttachmentRequest;
 use Asseco\Attachments\App\Http\Requests\AttachmentUpdateRequest;
 use Asseco\Attachments\App\Http\Requests\DeleteAttachmentsRequest;
@@ -53,6 +54,7 @@ class AttachmentController extends Controller
         $file = Arr::get($validated, 'attachment');
         $filingPurposeId = Arr::get($validated, 'filing_purpose_id');
         $originalName = Arr::get($validated, 'original_name');
+        $externalId = Arr::get($validated, 'external_id');
 
         if ($impersonateUserId = $request->header('impersonate-user-id')) {
             // When request comes from background service, and we want to know who is responsible for attachment
@@ -65,7 +67,7 @@ class AttachmentController extends Controller
             }
         }
 
-        $attachment = $this->attachment::createFrom($file, $filingPurposeId, $originalName);
+        $attachment = $this->attachment::createFrom($file, $filingPurposeId, $originalName, $externalId);
 
         CachedUploads::store($file, $attachment);
 
@@ -284,8 +286,9 @@ class AttachmentController extends Controller
         $response = Http::get(
             $url,
             [
-                'service'   => strtolower(Str::snake(config('app.name', ''))),
-                'path'      => $attachment->path,
+                'service'       => strtolower(Str::snake(config('app.name', ''))),
+                'path'          => $attachment->path,
+                'external_id'   => $attachment->external_id,
             ]
         )->throw();
 
@@ -300,5 +303,39 @@ class AttachmentController extends Controller
                 'Content-Type' => $contentType,
             ]
         );
+    }
+
+    public function register(AttachmentRegisterRequest $request)
+    {
+
+        $validated = $request->validated();
+        $filingPurposeId = Arr::get($validated, 'filing_purpose_id');
+        $originalName = Arr::get($validated, 'original_name');
+        $mimeType = Arr::get($validated, 'mime_type');
+        $size = (int)Arr::get($validated, 'size', 1);
+        $path = Arr::get($validated, 'path') ?: $originalName;
+        $externalId = Arr::get($validated, 'external_id');
+
+        if ($impersonateUserId = $request->header('impersonate-user-id')) {
+            // When request comes from background service, and we want to know who is responsible for attachment
+            $user = auth()->user();
+            if ($user) {
+                $user->user_id = $impersonateUserId;
+                if (method_exists($user, 'setIsServiceToken')) {
+                    $user->setIsServiceToken(false);
+                }
+            }
+        }
+
+        $attachment = $this->attachment::register(
+            $originalName,
+            $mimeType,
+            $path,
+            $size,
+            $filingPurposeId,
+            $externalId
+        );
+
+        return response()->json($attachment->refresh());
     }
 }

@@ -27,6 +27,7 @@ class AttachmentUpdateRequest extends FormRequest
     {
         return [
             'filing_purpose_id' => 'required|string|exists:filing_purposes,id',
+            'external_id'       => 'nullable|string|max:255',
         ];
     }
 }

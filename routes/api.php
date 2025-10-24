@@ -22,6 +22,7 @@ Route::prefix(config('asseco-attachments.routes.prefix'))
 
         Route::delete('attachments/bulk-soft-delete', [AttachmentController::class, 'bulkSoftDelete'])->name('attachments.bulkSoftDelete');
 
+        Route::post('attachments/register', [AttachmentController::class, 'register']);
         Route::apiResource('attachments', AttachmentController::class);
 
         Route::get('attachments/{attachment}/download', [AttachmentController::class, 'download'])->name('attachments.download');

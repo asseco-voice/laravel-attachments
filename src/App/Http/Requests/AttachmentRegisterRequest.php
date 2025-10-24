@@ -6,7 +6,7 @@ namespace Asseco\Attachments\App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AttachmentRequest extends FormRequest
+class AttachmentRegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +26,11 @@ class AttachmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'attachment'        => 'required|file',
+            'original_name'     => 'required|string|max:250',
+            'mime_type'         => 'required|string|max:50',
+            'size'              => 'nullable|int|min:0',
+            'path'              => 'nullable|string|max:255',
             'filing_purpose_id' => 'sometimes|string|exists:filing_purposes,id',
-            'original_name'     => 'nullable|string|max:250',
             'external_id'       => 'nullable|string|max:255',
         ];
     }
