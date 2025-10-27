@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Symfony\Component\Mime\MimeTypes;
 
 /**
  * @property string $id
@@ -93,13 +94,19 @@ class Attachment extends Model implements \Asseco\Attachments\App\Contracts\Atta
 
     public static function register(
         string $originalName,
-        string $mimeType,
         string $path,
         int $size,
+        ?string $mimeType,
         ?string $filingPurposeId = null,
         ?string $externalId = null,
     ) : self {
 
+        if (empty($mimeType)) {
+            $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+            $mimeTypes = MimeTypes::getDefault();
+            $mimeTypeList = $mimeTypes->getMimeTypes($extension);
+            $mimeType = $mimeTypeList[0] ?? 'application/octet-stream';
+        }
         $data = [
             'name'          => $originalName,
             'mime_type'     => $mimeType,

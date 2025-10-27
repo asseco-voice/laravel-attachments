@@ -27,7 +27,7 @@ class AttachmentRegisterRequest extends FormRequest
     {
         return [
             'original_name'     => 'required|string|max:250',
-            'mime_type'         => 'required|string|max:50',
+            'mime_type'         => 'nullable|string|max:250',
             'size'              => 'nullable|int|min:0',
             'path'              => 'nullable|string|max:255',
             'filing_purpose_id' => 'sometimes|string|exists:filing_purposes,id',

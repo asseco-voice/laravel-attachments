@@ -311,7 +311,7 @@ class AttachmentController extends Controller
         $validated = $request->validated();
         $filingPurposeId = Arr::get($validated, 'filing_purpose_id');
         $originalName = Arr::get($validated, 'original_name');
-        $mimeType = Arr::get($validated, 'mime_type');
+        $mimeType = Arr::get($validated, 'mime_type', '');
         $size = (int)Arr::get($validated, 'size', 1);
         $path = Arr::get($validated, 'path') ?: $originalName;
         $externalId = Arr::get($validated, 'external_id');
@@ -329,9 +329,9 @@ class AttachmentController extends Controller
 
         $attachment = $this->attachment::register(
             $originalName,
-            $mimeType,
             $path,
             $size,
+            $mimeType,
             $filingPurposeId,
             $externalId
         );
