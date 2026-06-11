@@ -283,7 +283,15 @@ class AttachmentController extends Controller
 
         // append attachment ID into URL
         $url = rtrim($url, '/') . '/' . $attachment->id;
-        $response = Http::get(
+
+        $pendingRequest = Http::withHeaders([]);
+
+        // forward auth token of the logged-in user to the fallback service
+        if ($authorization = request()->header('Authorization')) {
+            $pendingRequest = $pendingRequest->withHeaders(['Authorization' => $authorization]);
+        }
+
+        $response = $pendingRequest->get(
             $url,
             [
                 'service'       => strtolower(Str::snake(config('app.name', ''))),
