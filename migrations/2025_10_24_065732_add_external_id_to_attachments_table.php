@@ -30,6 +30,7 @@ class AddExternalIdToAttachmentsTable extends Migration
     public function down(): void
     {
         Schema::table('attachments', function (Blueprint $table) {
+            $table->dropIndex('attachments_ext_id_idx');
             $table->dropColumn('external_id');
         });
     }

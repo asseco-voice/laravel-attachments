@@ -20,7 +20,7 @@ class AttachmentControllerTest extends TestCase
         $this->attachment = app(Attachment::class);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function can_fetch_all_attachment_fields()
     {
         $this->withoutExceptionHandling();
@@ -38,7 +38,7 @@ class AttachmentControllerTest extends TestCase
         $this->assertCount(5, $this->attachment::all());
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function rejects_creating_attachment_with_invalid_name()
     {
         $request = $this->attachment::factory()->make([
@@ -50,7 +50,7 @@ class AttachmentControllerTest extends TestCase
             ->assertStatus(422);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function creates_attachment()
     {
         $file = UploadedFile::fake()->create('testing.xlsx');
@@ -60,7 +60,7 @@ class AttachmentControllerTest extends TestCase
             ->assertStatus(200);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function can_return_attachment_by_id()
     {
         $this->attachment::factory()->count(5)->create();
@@ -70,7 +70,7 @@ class AttachmentControllerTest extends TestCase
             ->assertJsonFragment(['id' => 3]);
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function can_delete_attachment()
     {
         $attachment = $this->attachment::factory()->create();

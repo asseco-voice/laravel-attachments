@@ -32,6 +32,7 @@ class AddFilingPurposesToAttachmentsTable extends Migration
     public function down(): void
     {
         Schema::table('attachments', function (Blueprint $table) {
+            $table->dropForeign(['filing_purpose_id']);
             $table->dropColumn('filing_purpose_id');
         });
     }
